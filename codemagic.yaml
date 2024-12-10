@@ -2,27 +2,20 @@ workflows:
   build_android_ios:
     name: Build APK and IPA
     environment:
-      node: 16
-      android: true
       vars:
         DOCKER_USERNAME: "uiregistry"
         DOCKER_PASSWORD: "Cn4Ukh6bHcGuJL"
-    docker:
-      image: registry.amodosoluciones.net/amodosoluciones/laravel-capacitor:latest
     scripts:
-      # Instalar dependencias y sincronizar Capacitor
-      - npm install
-      - npx cap sync
-
-      # Construcción para Android
-      - cd android
-      - ./gradlew assembleRelease
-      - cd ..
-
-      # Construcción para iOS
-      - cd ios/App
-      - xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -archivePath App.xcarchive archive
-      - xcodebuild -exportArchive -archivePath App.xcarchive -exportPath . -exportOptionsPlist ExportOptions.plist
+      # Usa tu imagen Docker personalizada
+      - docker pull registry.amodosoluciones.net/amodosoluciones/laravel-capacitor:latest
+      - docker run --rm -v $PWD:/app registry.amodosoluciones.net/amodosoluciones/laravel-capacitor:latest sh -c "
+        npm install &&
+        npx cap sync &&
+        cd android &&
+        ./gradlew assembleRelease &&
+        cd ../ios/App &&
+        xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -archivePath App.xcarchive archive &&
+        xcodebuild -exportArchive -archivePath App.xcarchive -exportPath . -exportOptionsPlist ExportOptions.plist"
     artifacts:
       - android/app/build/outputs/apk/release/app-release.apk
       - ios/App/*.ipa
