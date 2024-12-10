@@ -6,8 +6,7 @@ workflows:
         DOCKER_USERNAME: "uiregistry"
         DOCKER_PASSWORD: "Cn4Ukh6bHcGuJL"
     scripts:
-      - echo "Instalando Docker usando el script oficial"
-      - curl -fsSL https://get.docker.com -o get-docker.sh
+      - echo "Ejecutando el script local para instalar Docker"
       - sh get-docker.sh
       - echo "$DOCKER_PASSWORD" | docker login registry.amodosoluciones.net -u "$DOCKER_USERNAME" --password-stdin
       - docker pull registry.amodosoluciones.net/amodosoluciones/laravel-capacitor:latest
