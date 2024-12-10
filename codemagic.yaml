@@ -7,9 +7,6 @@ workflows:
       - echo "Instalando dependencias de Node.js"
       - npm ci
       - echo "Configurando permisos para Gradlew y compilando APK"
-      - cd android
-      - ls -la # Depuración para verificar contenido de la carpeta
-      - chmod +x gradlew
       - ./gradlew assembleRelease
       - cd ..
       - echo "Instalando CocoaPods"
