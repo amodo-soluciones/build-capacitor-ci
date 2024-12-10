@@ -2,12 +2,14 @@ workflows:
   build_android_ios:
     name: Build APK and IPA
     environment:
-      node: 18
+      node: 16
     scripts:
       - echo "Instalando dependencias de Node.js"
       - npm ci
-      - echo "Compilando APK para Android"
+      - echo "Configurando permisos para Gradlew"
       - cd android
+      - chmod +x gradlew
+      - echo "Compilando APK para Android"
       - ./gradlew assembleRelease
       - cd ..
       - echo "Instalando CocoaPods"
