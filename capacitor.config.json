@@ -1,0 +1,8 @@
+{
+  "appId": "com.amodosoluciones.baseapp",
+  "appName": "amodosoluciones-base",
+  "server": {
+    "url": "https://gestion.amodosoluciones.net",
+    "cleartext": true
+  }
+}
