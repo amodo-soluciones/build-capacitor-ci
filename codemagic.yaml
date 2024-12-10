@@ -2,14 +2,14 @@ workflows:
   build_android_ios:
     name: Build APK and IPA
     environment:
-      node: 18
+      node: 18 # Usar Node.js 18
     scripts:
       - echo "Instalando dependencias de Node.js"
       - npm ci
       - echo "Verificando el contenido del directorio raíz"
       - ls -la
       - echo "Accediendo a la carpeta android"
-      - cd android || echo "Error: No se pudo acceder a la carpeta android"
+      - cd android
       - echo "Verificando contenido de android"
       - ls -la
       - echo "Configurando permisos para Gradlew"
@@ -18,7 +18,7 @@ workflows:
       - java -version
       - ./gradlew --version
       - echo "Compilando APK para Android"
-      - ./gradlew assembleRelease --stacktrace || echo "Error: La compilación de Android falló"
+      - ./gradlew assembleRelease --stacktrace
       - cd ..
       - echo "Instalando CocoaPods"
       - sudo gem install cocoapods
