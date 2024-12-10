@@ -1,23 +1,21 @@
 workflows:
   build_android_ios:
-    name: Build APK and IPA with manual Docker installation
+    name: Build APK and IPA
     environment:
-      vars:
-        DOCKER_USERNAME: "uiregistry"
-        DOCKER_PASSWORD: "Cn4Ukh6bHcGuJL"
+      node: 18 
     scripts:
-      - echo "Instalando Docker de forma manual"
-      - apt-get update && apt-get install -y docker.io
-      - echo "$DOCKER_PASSWORD" | docker login registry.amodosoluciones.net -u "$DOCKER_USERNAME" --password-stdin
-      - docker pull registry.amodosoluciones.net/amodosoluciones/laravel-capacitor:latest
-      - docker run --rm -v $PWD:/app registry.amodosoluciones.net/amodosoluciones/laravel-capacitor:latest sh -c "
-        npm install &&
-        npx cap sync &&
-        cd android &&
-        ./gradlew assembleRelease &&
-        cd ../ios/App &&
-        xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -archivePath App.xcarchive archive &&
-        xcodebuild -exportArchive -archivePath App.xcarchive -exportPath . -exportOptionsPlist ExportOptions.plist"
+      - echo "Instalando dependencias de Node.js"
+      - npm install
+      - echo "Sincronizando Capacitor"
+      - npx cap sync
+      - echo "Compilando APK para Android"
+      - cd android
+      - ./gradlew assembleRelease
+      - cd ..
+      - echo "Compilando IPA para iOS"
+      - cd ios/App
+      - xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -archivePath App.xcarchive archive
+      - xcodebuild -exportArchive -archivePath App.xcarchive -exportPath . -exportOptionsPlist ExportOptions.plist
     artifacts:
       - android/app/build/outputs/apk/release/app-release.apk
       - ios/App/*.ipa
