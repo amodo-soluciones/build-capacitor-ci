@@ -2,12 +2,10 @@ workflows:
   build_android_ios:
     name: Build APK and IPA
     environment:
-      node: 16
+      node: 18
     scripts:
       - echo "Instalando dependencias de Node.js"
       - npm ci
-      - echo "Sincronizando Capacitor"
-      - npx cap sync
       - echo "Compilando APK para Android"
       - cd android
       - ./gradlew assembleRelease
