@@ -2,18 +2,22 @@ workflows:
   build_android_ios:
     name: Build APK and IPA
     environment:
-      node: 18 
+      node: 16
     scripts:
       - echo "Instalando dependencias de Node.js"
-      - npm install
+      - npm ci
       - echo "Sincronizando Capacitor"
       - npx cap sync
       - echo "Compilando APK para Android"
       - cd android
       - ./gradlew assembleRelease
       - cd ..
-      - echo "Compilando IPA para iOS"
+      - echo "Instalando CocoaPods"
+      - sudo gem install cocoapods
+      - echo "Instalando dependencias de iOS con CocoaPods"
       - cd ios/App
+      - pod install
+      - echo "Compilando IPA para iOS"
       - xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -archivePath App.xcarchive archive
       - xcodebuild -exportArchive -archivePath App.xcarchive -exportPath . -exportOptionsPlist ExportOptions.plist
     artifacts:
