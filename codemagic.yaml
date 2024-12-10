@@ -8,6 +8,7 @@ workflows:
       - npm ci
       - echo "Configurando permisos para Gradlew"
       - cd android
+      - ls -la # Comando de depuración
       - chmod +x gradlew
       - echo "Compilando APK para Android"
       - ./gradlew assembleRelease
