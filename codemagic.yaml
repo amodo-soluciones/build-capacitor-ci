@@ -1,13 +1,13 @@
 workflows:
   build_android_ios:
-    name: Build APK and IPA with Docker
+    name: Build APK and IPA with manual Docker installation
     environment:
       vars:
         DOCKER_USERNAME: "uiregistry"
         DOCKER_PASSWORD: "Cn4Ukh6bHcGuJL"
     scripts:
-      - echo "Ejecutando el script local para instalar Docker"
-      - sh get-docker.sh
+      - echo "Instalando Docker de forma manual"
+      - apt-get update && apt-get install -y docker.io
       - echo "$DOCKER_PASSWORD" | docker login registry.amodosoluciones.net -u "$DOCKER_USERNAME" --password-stdin
       - docker pull registry.amodosoluciones.net/amodosoluciones/laravel-capacitor:latest
       - docker run --rm -v $PWD:/app registry.amodosoluciones.net/amodosoluciones/laravel-capacitor:latest sh -c "
