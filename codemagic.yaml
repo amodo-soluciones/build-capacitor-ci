@@ -1,12 +1,14 @@
 workflows:
   build_android_ios:
-    name: Build APK and IPA
+    name: Build APK and IPA with Docker
     environment:
+      image: docker:20.10.16 # Imagen base con Docker preinstalado
       vars:
         DOCKER_USERNAME: "uiregistry"
         DOCKER_PASSWORD: "Cn4Ukh6bHcGuJL"
     scripts:
-      # Usa tu imagen Docker personalizada
+      - apk add --no-cache docker-cli # Instala Docker CLI en caso de ser necesario
+      - echo "$DOCKER_PASSWORD" | docker login registry.amodosoluciones.net -u "$DOCKER_USERNAME" --password-stdin
       - docker pull registry.amodosoluciones.net/amodosoluciones/laravel-capacitor:latest
       - docker run --rm -v $PWD:/app registry.amodosoluciones.net/amodosoluciones/laravel-capacitor:latest sh -c "
         npm install &&
